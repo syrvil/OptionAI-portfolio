@@ -1,0 +1,89 @@
+services:
+  api:
+    build:
+      context: .
+      args:
+        RUNTIME_REQUIREMENTS: requirements-api.txt
+    image: optionai-api:local
+    environment:
+      OPTIONAI_API_HOST: 0.0.0.0
+      OPTIONAI_API_PORT: 8000
+      OPTIONAI_API_URL: http://api:8000
+      OPTIONAI_MCP_URL: http://mcp-server:8001/mcp
+      OPTIONAI_MCP_PORT: 8001
+      OPTIONAI_TECHNICAL_DATA_PROVIDER: ${OPTIONAI_TECHNICAL_DATA_PROVIDER:-mcp}
+      OPTIONAI_LLM_PROVIDER: ${OPTIONAI_LLM_PROVIDER:-google}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    command: python -m uvicorn app.api.main:app --host 0.0.0.0 --port 8000
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen('http://localhost:8000/health', timeout=3)
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "8000:8000"
+    volumes:
+      - optionai-cache:/app/data/cache
+      - optionai-llm-cache:/app/data/llm_cache
+      - optionai-raw:/app/data/raw
+
+  streamlit:
+    build:
+      context: .
+      args:
+        RUNTIME_REQUIREMENTS: requirements-streamlit-min.txt
+    image: optionai-streamlit:local
+    environment:
+      OPTIONAI_API_URL: http://api:8000
+      OPTIONAI_MCP_URL: http://mcp-server:8001/mcp
+      OPTIONAI_TECHNICAL_DATA_PROVIDER: ${OPTIONAI_TECHNICAL_DATA_PROVIDER:-mcp}
+    command: streamlit run streamlit_app.py --server.address 0.0.0.0 --server.port 8501
+    ports:
+      - "8501:8501"
+    depends_on:
+      api:
+        condition: service_healthy
+      mcp-server:
+        condition: service_healthy
+
+  mcp-server:
+    build:
+      context: .
+      args:
+        RUNTIME_REQUIREMENTS: requirements-mcp.txt
+    image: optionai-mcp:local
+    environment:
+      OPTIONAI_MCP_HOST: 0.0.0.0
+      OPTIONAI_MCP_PORT: 8001
+      OPTIONAI_MCP_SERVER_MODULE: ${OPTIONAI_MCP_SERVER_MODULE:-app.mcp.server}
+    command: sh -c 'python -m "$${OPTIONAI_MCP_SERVER_MODULE}"'
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import socket;
+          socket.create_connection(('localhost', 8001), timeout=3).close()
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "8001:8001"
+    volumes:
+      - optionai-cache:/app/data/cache
+      - optionai-raw:/app/data/raw
+
+volumes:
+  optionai-cache:
+  optionai-llm-cache:
+  optionai-raw:

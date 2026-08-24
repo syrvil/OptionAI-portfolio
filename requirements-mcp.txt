@@ -1,0 +1,7 @@
+# Runtime dependencies for FastMCP and raw MCP services
+# Runtime dependencies for FastMCP and raw MCP services
+pydantic
+pydantic-settings
+pandas
+yfinance
+mcp==1.29.0

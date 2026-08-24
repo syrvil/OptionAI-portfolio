@@ -1,0 +1,5 @@
+# Minimal dependencies for the API-boundary Streamlit UI
+streamlit
+pydantic
+pydantic-settings
+httpx

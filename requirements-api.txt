@@ -1,0 +1,15 @@
+# Runtime dependencies for the FastAPI analysis service
+fastapi
+pydantic
+pydantic-settings
+langchain
+langgraph
+openai
+langchain-openai
+langchain-google-genai
+yfinance
+ddgs
+pandas-ta-classic==0.6.52
+starlette<1
+vollib
+mcp==1.29.0
