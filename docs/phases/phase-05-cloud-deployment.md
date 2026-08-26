@@ -2,9 +2,9 @@
 
 ## Purpose
 
-Phase 5 deploys the existing Dockerized OptionAI services to Google Cloud
-without changing the graph, schemas, agents, or deterministic decision rules.
-Every step must leave a usable local or cloud workflow.
+Phase 5 documents how the Dockerized OptionAI services were prepared for
+Google Cloud. This portfolio edition presents the sanitized architecture and
+engineering evidence; the complete deployment workflow remains private.
 
 ## Goals and constraints
 
@@ -79,9 +79,10 @@ permissions. Record expected costs and scale-to-zero settings.
 ### 3. GitHub authentication and image pipeline
 
 Configure GitHub Actions Workload Identity Federation instead of a long-lived
-service-account key. The workflow runs tests, builds the three service images,
-runs pinned Grype scans, and only then authenticates and pushes to Artifact
-Registry.
+service-account key. The private workflow runs tests, builds the three service
+images, runs pinned Grype scans, and publishes only through an explicit manual
+deployment workflow. The public files show the pattern without operational
+project identifiers or complete deployment credentials.
 
 The pipeline uses three trigger levels:
 
@@ -97,10 +98,10 @@ Push to main:
   build and scan images
   do not push images or deploy automatically
 
-Release tag, for example v0.17.0:
-  build and scan images
-  push images to Artifact Registry
-  deploy to Cloud Run
+Manual deployment workflow:
+  build and scan the selected service image
+  push an immutable commit-SHA image to Artifact Registry
+  deploy the selected service to Cloud Run
 ```
 
 Images built on GitHub-hosted runners are temporary unless a release workflow
@@ -125,6 +126,12 @@ Verify `/health`, MCP tool calls, API-to-MCP access, Streamlit-to-API access,
 complete analysis, continuation, cache reuse, invalid tickers, and provider
 errors. Confirm that local Docker Compose still works after every cloud-facing
 change.
+
+The verified deployment order is MCP → API → Streamlit because API depends on
+MCP and Streamlit depends on API. The runtime request order is Streamlit → API
+→ MCP. Scale-to-zero, GCS persistence, Workload Identity Federation, and
+private service-to-service authentication were verified in the private
+implementation.
 
 ## Security and cost policy
 

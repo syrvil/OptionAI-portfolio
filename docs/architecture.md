@@ -62,6 +62,55 @@ Docker Compose and the planned Cloud Run deployment use separate API,
 Streamlit, and MCP service images. The public UI is the only public-facing
 service in the target cloud design.
 
+## Multi-agent and provider boundary
+
+```mermaid
+flowchart TD
+    SUPERVISOR[StateGraph supervisor]
+    TECH[Technical Analysis Agent]
+    MARKET[Market Context Agent]
+    NEWS[Ticker News Agent]
+    OPTIONS[Options Analysis Agent]
+    RECOMMEND[Recommendation Agent]
+    FACTS[Validated deterministic facts]
+    FACTORY[Provider-neutral model factory]
+    GEMINI[Hosted provider example]
+    OPENAI[OpenAI-compatible provider example]
+    LOCAL[Future local-provider boundary]
+
+    SUPERVISOR --> TECH
+    SUPERVISOR --> MARKET
+    SUPERVISOR --> NEWS
+    SUPERVISOR --> OPTIONS
+    SUPERVISOR --> RECOMMEND
+    TECH --> FACTS
+    MARKET --> FACTS
+    NEWS --> FACTS
+    OPTIONS --> FACTS
+    RECOMMEND --> FACTS
+    FACTS --> FACTORY
+    FACTORY --> GEMINI
+    FACTORY --> OPENAI
+    FACTORY --> LOCAL
+```
+
+The public examples intentionally show boundaries rather than complete
+production prompts, schemas, or strategy rules. Deterministic code owns
+calculations, validation, routing, and outcome rules; LLM providers interpret
+validated facts and explain them.
+
+## Cloud authentication and persistence
+
+GitHub Actions uses Workload Identity Federation rather than a long-lived
+service-account key. Cloud Run services use separate runtime identities. Only
+Streamlit is public; Streamlit → API and API → MCP calls use audience-specific
+identity tokens and `roles/run.invoker` bindings.
+
+Local and Compose deployments use filesystem or Docker-volume persistence. The
+cloud design uses Cloud Storage for durable objects under separate provider,
+LLM-cache, and raw-data prefixes. Cloud Run's local filesystem is disposable.
+Exact bucket, project, and account values are intentionally omitted here.
+
 ## Engineering qualities
 
 - schema-first validation;

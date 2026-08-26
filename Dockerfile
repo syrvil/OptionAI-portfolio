@@ -1,3 +1,5 @@
+# Sanitized portfolio artifact. It illustrates the private service-image
+# structure; the public edition is intentionally not a standalone build.
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \

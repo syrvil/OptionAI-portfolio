@@ -1,3 +1,5 @@
+# Sanitized portfolio artifact. Service names, health checks, volumes, and
+# boundaries are illustrative; the complete private application is omitted.
 services:
   api:
     build:
