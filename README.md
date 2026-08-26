@@ -133,10 +133,9 @@ the Docker, Compose, CI, and Cloud Run files should be read as engineering
 artifacts and design examples, not as a promise that this directory can be run
 independently.
 
-The complete private implementation can be demonstrated or shared selectively
-during a serious hiring process. It contains the complete business logic,
-production prompts, strategy rules, full API contracts, and live deployment
-configuration.
+The complete private implementation can be demonstrated or shared selectively. 
+It contains the complete business logic, production prompts, strategy rules, 
+full API contracts, and live deployment configuration.
 
 ## AI-assisted development
 
