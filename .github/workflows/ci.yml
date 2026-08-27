@@ -1,3 +1,5 @@
+# Sanitized portfolio artifact. The private repository contains the complete
+# runnable workflow and dependency set.
 name: CI
 
 on:

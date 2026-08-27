@@ -36,8 +36,8 @@ The project has three connected goals:
 - parallel analysis branches and progressive, human-in-the-loop continuation;
 - schema-guided structured LLM responses;
 - provider-neutral model integration through a model factory;
-- support for hosted LLM providers through a provider-neutral model factory,
-  with a boundary for future local models;
+- static per-agent selection of hosted LLM providers and models, with a global
+  fallback and a boundary for future local models;
 - explicit cache, model, token-usage, and request-duration metadata.
 
 ### Software architecture
@@ -71,6 +71,12 @@ structured outputs, evidence and risk reporting, and the separation between
 validated facts and LLM explanation. The production calculations, indicator
 combinations, options-selection rules, recommendation thresholds, exact
 LLM-facing fact contract, and production prompt wording remain private.
+
+Provider selection is configuration-based rather than dynamically routed at
+runtime. A local setup may use Gemini for most agents and OpenAI for the
+Recommendation Agent. Cloud deployments can use a separate configuration; the
+current cloud setup uses Google models only to control API costs. Ollama is a
+planned local-provider extension.
 
 ### Platform and delivery engineering
 
@@ -133,9 +139,10 @@ the Docker, Compose, CI, and Cloud Run files should be read as engineering
 artifacts and design examples, not as a promise that this directory can be run
 independently.
 
-The complete private implementation can be demonstrated or shared selectively. 
-It contains the complete business logic, production prompts, strategy rules, 
-full API contracts, and live deployment configuration.
+The complete private implementation can be demonstrated or shared selectively
+during a serious hiring process. It contains the complete business logic,
+production prompts, strategy rules, full API contracts, and live deployment
+configuration.
 
 ## AI-assisted development
 

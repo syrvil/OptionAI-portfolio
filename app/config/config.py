@@ -31,6 +31,17 @@ class Settings(BaseSettings):
     mcp_port: int = Field(default=8001, ge=1, le=65535)
     options_risk_free_rate: float = Field(default=0.04, ge=0, le=1)
     llm_provider: Literal["openai", "google"] = "google"
+    # Optional per-agent overrides; empty values fall back to global settings.
+    technical_llm_provider: Literal["openai", "google"] | None = None
+    technical_llm_model: str | None = None
+    market_context_llm_provider: Literal["openai", "google"] | None = None
+    market_context_llm_model: str | None = None
+    ticker_news_llm_provider: Literal["openai", "google"] | None = None
+    ticker_news_llm_model: str | None = None
+    options_llm_provider: Literal["openai", "google"] | None = None
+    options_llm_model: str | None = None
+    recommendation_llm_provider: Literal["openai", "google"] | None = None
+    recommendation_llm_model: str | None = None
     openai_api_key: SecretStr | None = Field(
         default=None,
         validation_alias=AliasChoices("OPENAI_API_KEY", "OPENAI_AI_KEY"),

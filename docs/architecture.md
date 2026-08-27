@@ -99,6 +99,17 @@ production prompts, schemas, or strategy rules. Deterministic code owns
 calculations, validation, routing, and outcome rules; LLM providers interpret
 validated facts and explain them.
 
+### Static per-agent model configuration
+
+Each agent can select its provider and model through configuration. An
+agent-specific setting overrides the global default; otherwise the global
+provider and model are used. This is deliberate configuration, not dynamic
+runtime routing. It supports experiments such as using Gemini for most agents
+and OpenAI for Recommendation while keeping the workflow deterministic.
+
+The cloud deployment currently selects Google models for all agents to control
+costs. A local-provider adapter such as Ollama is a planned extension.
+
 ## Cloud authentication and persistence
 
 GitHub Actions uses Workload Identity Federation rather than a long-lived
