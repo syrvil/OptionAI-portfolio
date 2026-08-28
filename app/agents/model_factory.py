@@ -42,4 +42,15 @@ def create_chat_model(agent_name: str | None = None) -> BaseChatModel:
             thinking_level=settings.google_thinking_level,
             thinking_budget=settings.google_thinking_budget,
         )
+    if provider == "ollama":
+        # The portfolio copy shows the provider boundary; the complete
+        # production adapter and dependency configuration remain private.
+        from langchain_ollama import ChatOllama
+
+        return ChatOllama(
+            model=model,
+            base_url=settings.ollama_base_url,
+            temperature=0,
+            num_predict=settings.llm_max_output_tokens,
+        )
     raise ValueError(f"Unsupported LLM provider: {provider}")

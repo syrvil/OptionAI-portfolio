@@ -76,7 +76,7 @@ flowchart TD
     FACTORY[Provider-neutral model factory]
     GEMINI[Hosted provider example]
     OPENAI[OpenAI-compatible provider example]
-    LOCAL[Future local-provider boundary]
+    LOCAL[Local provider boundary]
 
     SUPERVISOR --> TECH
     SUPERVISOR --> MARKET
@@ -107,8 +107,13 @@ provider and model are used. This is deliberate configuration, not dynamic
 runtime routing. It supports experiments such as using Gemini for most agents
 and OpenAI for Recommendation while keeping the workflow deterministic.
 
-The cloud deployment currently selects Google models for all agents to control
-costs. A local-provider adapter such as Ollama is a planned extension.
+The initial local comparison has already tested Ollama with both a general
+Gemma model and a finance-tuned GGUF model. The cloud deployment deliberately
+uses Google models for every agent rather than a mixed provider configuration,
+because OpenAI requests are billable under the current project cost policy.
+Ollama is available for local experiments through a separate local API image.
+Future evaluation can compare additional Ollama-imported Hugging Face GGUF
+models or direct llama.cpp adapters through the same boundary.
 
 ## Cloud authentication and persistence
 

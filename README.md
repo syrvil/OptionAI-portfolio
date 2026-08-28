@@ -36,8 +36,8 @@ The project has three connected goals:
 - parallel analysis branches and progressive, human-in-the-loop continuation;
 - schema-guided structured LLM responses;
 - provider-neutral model integration through a model factory;
-- static per-agent selection of hosted LLM providers and models, with a global
-  fallback and a boundary for future local models;
+- static per-agent selection of hosted and local LLM providers and models, with
+  a global fallback;
 - explicit cache, model, token-usage, and request-duration metadata.
 
 ### Software architecture
@@ -72,11 +72,26 @@ validated facts and LLM explanation. The production calculations, indicator
 combinations, options-selection rules, recommendation thresholds, exact
 LLM-facing fact contract, and production prompt wording remain private.
 
+### Local model experiment
+
+A Technical Analysis comparison used the same input and output schema:
+
+| Model | Result |
+|---|---|
+| Gemini | Fastest and most factually reliable |
+| Gemma 3 4B | Valid output, but slower and made an RSI interpretation error |
+| Finance-tuned Llama 3 8B | Slower and made price-versus-SMA reasoning errors |
+
+The experiment showed that domain fine-tuning does not automatically produce
+better financial reasoning. The models were compared for latency,
+structured-output validity, factual grounding, neutrality, and usefulness.
+
 Provider selection is configuration-based rather than dynamically routed at
 runtime. A local setup may use Gemini for most agents and OpenAI for the
 Recommendation Agent. Cloud deployments can use a separate configuration; the
-current cloud setup uses Google models only to control API costs. Ollama is a
-planned local-provider extension.
+current cloud setup uses Google models only to control API costs. Ollama is
+available for local experiments. See
+[`docs/deployment-ollama.md`](docs/deployment-ollama.md).
 
 ### Platform and delivery engineering
 
@@ -90,6 +105,7 @@ planned local-provider extension.
 - Secret Manager for managed secrets;
 - Workload Identity Federation instead of long-lived cloud keys;
 - separate runtime service accounts and private service-to-service calls.
+- local Ollama model experiments with GPU-backed GGUF models.
 
 ## Cloud architecture example
 
@@ -125,6 +141,7 @@ sanitized, but the architecture and security boundaries are documented in
 - [Selected architecture decisions](docs/decisions/README.md)
 - [Development and quality principles](docs/development_guidelines.md)
 - [Project roadmap](docs/roadmap.md)
+- [Local Ollama setup example](docs/deployment-ollama.md)
 
 The documentation is selected to show engineering reasoning. Private learning
 journals, detailed production implementation logs, personal investment notes,
