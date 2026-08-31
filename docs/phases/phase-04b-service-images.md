@@ -67,22 +67,22 @@ The minimal Streamlit image reduced the image from approximately 892 MB to
 564 MB. Live Compose testing then confirmed MCP startup, initial analysis, and
 continuation analysis with the reduced UI dependency set.
 
-The next optimization investigates Streamlit separately. The UI module still
+The remaining optimization opportunity is to investigate Streamlit separately.
+The UI module still
 imports several backend runners and agents at module load time, even though
 the normal workflow calls FastAPI. Those imports may be removable or lazily
 loaded, but the change must preserve historical review and all rendered
 reports.
 
-Further experiments will audit the API and MCP images separately. The API is
-expected to retain most analysis dependencies because it owns the complete
-workflow. MCP may have a smaller raw-data boundary than the embedded FastMCP
-technical-analysis server, so the two server modes will be compared before
-changing their packaging.
+The API and MCP image audits were also completed. The API retains most analysis
+dependencies because it owns the complete workflow. MCP has the smaller
+raw-data boundary than the embedded FastMCP technical-analysis server, and the
+two server modes now share the aligned provider capability.
 
 Phase 4b is complete. The optimized images preserve the same service
 interfaces, provider modes, cache volumes, and workflow behavior while
-reducing unnecessary dependencies. Cloud deployment planning can now use these
-service boundaries as its starting point.
+reducing unnecessary dependencies. Cloud deployment uses these service
+boundaries as its starting point.
 
 FastMCP and raw MCP now expose the same `get_price_history` tool. Live FastMCP
 testing confirmed initial and continuation analysis with the aligned interface;
@@ -96,11 +96,10 @@ remain available. MCP client dependencies are also needed when an MCP provider
 mode is selected. Further API reduction would require separate provider- or
 workflow-specific images, which is deferred.
 
-The next priority is an API dependency audit. After that, the FastMCP and raw
-MCP tool sets will be aligned: both should expose the provider capability used
-by the workflow, `get_price_history`. The extra FastMCP convenience tool for
-running complete Technical Analysis is not part of the authoritative API
-workflow and is planned for removal after the API audit.
+The API dependency audit and FastMCP/raw MCP tool alignment are complete. Both
+expose the provider capability used by the workflow, `get_price_history`. The
+extra FastMCP convenience tool for running complete Technical Analysis is not
+part of the authoritative API workflow.
 
 The MCP audit also found that `app/services/__init__.py` eagerly imported the
 options-data service. It is now side-effect-free, matching the tools and agents

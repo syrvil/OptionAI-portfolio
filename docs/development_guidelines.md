@@ -245,8 +245,9 @@ Security checks should provide fast local feedback and independent CI verificati
 Bandit and Gitleaks run through pre-commit for local feedback. Gitleaks is a
 system executable (installed separately from the Python dependencies), and the
 local hook scans the staged changes with `gitleaks git --pre-commit --staged`.
-GitHub Actions checks are planned, but are not configured yet; until then, run
-the equivalent commands locally before pushing.
+GitHub Actions runs the repository checks and container scans in CI. Run the
+same checks locally before pushing to receive faster feedback and keep the
+development workflow reproducible.
 
 ---
 

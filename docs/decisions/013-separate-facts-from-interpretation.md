@@ -17,5 +17,5 @@ data layer.
 ## Consequences
 
 The prompt and tests validate interpretation fields rather than duplicated
-indicator fields. Future LangGraph nodes can calculate indicators, generate an
-interpretation, and assemble a report as separate steps.
+indicator fields. The implemented workflow calculates indicators, generates an
+interpretation, and assembles a report as separate steps.

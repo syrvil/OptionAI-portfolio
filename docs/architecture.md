@@ -58,9 +58,9 @@ Streamlit → FastAPI → StateGraph and services
                     optional MCP provider
 ```
 
-Docker Compose and the planned Cloud Run deployment use separate API,
-Streamlit, and MCP service images. The public UI is the only public-facing
-service in the target cloud design.
+Docker Compose and the verified Cloud Run deployment use separate API,
+Streamlit, and MCP service images. Cloud Run services are private by default;
+personal Streamlit access uses an authenticated local proxy.
 
 ## Multi-agent and provider boundary
 

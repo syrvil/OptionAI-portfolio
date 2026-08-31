@@ -14,7 +14,8 @@ engineering evidence; the complete deployment workflow remains private.
 - Manage GCP resources with the `gcloud` CLI.
 - Keep Docker Compose and the non-Docker local workflow working.
 - Never commit API keys or long-lived cloud credentials.
-- Keep the public surface limited to the Streamlit UI.
+- Keep Cloud Run services private by default and control developer access
+  outside the application.
 
 ## Target architecture
 
@@ -64,12 +65,13 @@ Audit result:
 - API and MCP expose health/readiness endpoints suitable for Cloud Run probes.
 - The three specialized images already have independent entry points and can
   be deployed separately.
-- No cloud-specific storage adapter, Artifact Registry workflow, Workload
-  Identity configuration, or Cloud Run deployment definitions exist yet.
+- The cloud-specific storage adapter, Artifact Registry workflow, Workload
+  Identity configuration, and Cloud Run deployment definitions were implemented
+  in the private project and are represented here only as sanitized patterns.
 
-The audit is complete. The first implementation gap is the configurable storage
-boundary; GCP resource design can proceed in parallel as documentation and CLI
-setup.
+The audit identified the configurable storage boundary, specialized service
+images, and IAM boundaries as the main implementation concerns. These concerns
+were subsequently implemented and verified in the private project.
 
 ### 2. GCP resource design
 
