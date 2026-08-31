@@ -110,7 +110,7 @@ available for local experiments. See
 ## Cloud architecture example
 
 ```text
-Public Streamlit
+Private Streamlit UI
        │ audience-specific identity token
        ▼
 Private FastAPI API
@@ -122,10 +122,13 @@ Private MCP service
 Google Cloud Storage
 ```
 
-Only Streamlit is public. GitHub Actions authenticates to Google Cloud through
-Workload Identity Federation. Cloud Run uses separate runtime identities for
-Streamlit, API, and MCP. The full deployment walkthrough is intentionally
-sanitized, but the architecture and security boundaries are documented in
+Cloud Run services are private by default. Personal access to Streamlit uses
+an authenticated local Cloud Run proxy, while the application remains
+independent of the access mechanism. GitHub Actions authenticates to Google
+Cloud through Workload Identity Federation. Cloud Run uses separate runtime
+identities for Streamlit, API, and MCP. A future Identity-Aware Proxy could
+provide Google-account login for selected external users. The full deployment
+walkthrough is intentionally sanitized, but the architecture and security boundaries are documented in
 [`docs/architecture.md`](docs/architecture.md) and
 [`docs/phases/phase-05-cloud-deployment.md`](docs/phases/phase-05-cloud-deployment.md).
 

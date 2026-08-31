@@ -118,9 +118,11 @@ models or direct llama.cpp adapters through the same boundary.
 ## Cloud authentication and persistence
 
 GitHub Actions uses Workload Identity Federation rather than a long-lived
-service-account key. Cloud Run services use separate runtime identities. Only
-Streamlit is public; Streamlit → API and API → MCP calls use audience-specific
-identity tokens and `roles/run.invoker` bindings.
+service-account key. Cloud Run services use separate runtime identities and are
+private by default. Personal Streamlit access uses an authenticated local proxy;
+Streamlit → API and API → MCP calls use audience-specific identity tokens and
+`roles/run.invoker` bindings. A future Identity-Aware Proxy could provide
+Google-account login without changing the application.
 
 Local and Compose deployments use filesystem or Docker-volume persistence. The
 cloud design uses Cloud Storage for durable objects under separate provider,

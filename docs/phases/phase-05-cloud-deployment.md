@@ -20,7 +20,7 @@ engineering evidence; the complete deployment workflow remains private.
 
 ```mermaid
 flowchart TD
-    UI[Public Streamlit Cloud Run service]
+    UI[Private Streamlit Cloud Run service]
     API[Private FastAPI Cloud Run service]
     MCP[Private MCP Cloud Run service]
     GCS[Google Cloud Storage cache]
@@ -39,8 +39,9 @@ flowchart TD
     AR --> MCP
 ```
 
-Streamlit is the only public service. FastAPI and MCP use authenticated,
-private service-to-service access. Cloud Storage replaces persistent local
+Cloud Run services are private by default. FastAPI and MCP use authenticated,
+private service-to-service access, while personal browser access to Streamlit
+uses an authenticated local Cloud Run proxy. Cloud Storage replaces persistent local
 cache files for cloud deployments; local files remain the default for
 development.
 
@@ -133,13 +134,18 @@ MCP and Streamlit depends on API. The runtime request order is Streamlit → API
 private service-to-service authentication were verified in the private
 implementation.
 
+The private Streamlit boundary is outside the application. Identity-Aware Proxy
+and Google-account login are possible future access-layer extensions, not part
+of this portfolio artifact.
+
 ## Security and cost policy
 
 - Scan images before cloud authentication and publication.
 - Fail publication for fixable HIGH or CRITICAL image vulnerabilities.
 - Pin action and scanner versions.
 - Grant each service only the IAM permissions it needs.
-- Keep API and MCP private.
+- Keep Cloud Run services private by default and keep access control outside the
+  application.
 - Use scale-to-zero and one region initially.
 - Keep Artifact Registry and Cloud Storage lifecycle policies small and
   explicit.
