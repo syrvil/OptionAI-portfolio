@@ -1,10 +1,10 @@
 # Learning-oriented roadmap
 
-This roadmap describes the planned technology-learning sequence after the v0.9
-local MVP. It complements the active [product backlog](product_backlog.md) and
-the historical [MVP roadmap](mvp_roadmap.md). The sequence is intentionally
-incremental: each phase adds one important concept while preserving the shared
-domain services and deterministic business rules.
+This roadmap describes the technology-learning sequence after the v0.9 local
+MVP. The detailed backlog and historical planning documents remain private;
+this portfolio version presents the public learning narrative only. The
+sequence is intentionally incremental: each phase adds one important concept
+while preserving the shared domain services and deterministic business rules.
 
 ## Guiding principles
 
@@ -34,11 +34,13 @@ v0.14 API configuration and continuation improvements (complete)
 Phase 4: Docker Compose local deployment
     ↓
 Phase 5: cloud deployment
+    ↓
+Phase 6: local LLM evaluation and model operations
 ```
 
 ## Phase 1 — Asynchronous StateGraph
 
-Design document: [phase-01-async-stategraph.md](phases/phase-01-async-stategraph.md)
+The private repository contains the detailed design document for this phase.
 
 Run independent Market Context and Ticker News analyses concurrently after
 technical analysis. Preserve deterministic routing, shared state validation,
@@ -56,7 +58,7 @@ Learning objectives:
 
 Status: complete
 
-Design document: [phase-02-fastapi.md](phases/phase-02-fastapi.md)
+The private repository contains the detailed design document for this phase.
 
 Expose the composed analysis workflow through FastAPI and migrate Streamlit to
 call the HTTP API. The backend owns StateGraph execution; Streamlit becomes a
@@ -134,6 +136,20 @@ Learning objectives:
 - logs, health checks, and failure diagnosis;
 - persistent storage and cache lifecycle;
 - controlled CI/CD deployment and rollback.
+
+## Phase 6 — Local LLM evaluation and model operations
+
+Evaluate model and prompt changes locally using a small versioned set of frozen
+cases, deterministic checks, runtime measurements, and manual review. Technical
+Analysis is the first evaluated agent. The planned expansion order is Market
+Context, Ticker News, Options, and Recommendation.
+
+The LLM judge is an optional experimental aid and is not treated as ground
+truth or as a merge gate. The process is deliberately separate from normal CI
+and cloud deployment because local models such as Ollama are not available on
+the GitHub-hosted deployment environment.
+
+See [LLM evaluation](llm-evaluation.md) for the sanitized process overview.
 
 ## Completion rule
 

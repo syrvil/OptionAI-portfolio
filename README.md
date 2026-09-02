@@ -93,6 +93,28 @@ current cloud setup uses Google models only to control API costs. Ollama is
 available for local experiments. See
 [`docs/deployment-ollama.md`](docs/deployment-ollama.md).
 
+The evaluation approach is summarized in
+[`docs/llm-evaluation.md`](docs/llm-evaluation.md). It is a local, deliberate
+process rather than a workflow that runs on every commit.
+
+### Evaluation workflow
+
+The project includes a lightweight, local evaluation process for testing model
+or prompt changes against the same versioned Technical Analysis cases. The
+process runs the complete case set for one configuration, performs deterministic
+checks on the generated reports, and records latency and other available
+metadata. A single Markdown review packet contains all cases for that test run,
+so a reviewer can assess each output against its supplied facts.
+
+Evaluation results are summarized in JSON and Markdown, with a flat registry
+for results worth preserving. Manual review is currently the preferred quality
+assessment. An LLM judge is available as an experimental, advisory second
+opinion; it is not treated as ground truth or as a merge/deployment gate. The
+evaluation runner currently covers Technical Analysis, with Market Context as
+the next planned agent. The public repository shows the evaluation design and
+selected examples; the complete evaluation data remains in the private
+project.
+
 ### Platform and delivery engineering
 
 - Docker and Docker Compose service boundaries;
@@ -106,6 +128,7 @@ available for local experiments. See
 - Workload Identity Federation instead of long-lived cloud keys;
 - separate runtime service accounts and private service-to-service calls.
 - local Ollama model experiments with GPU-backed GGUF models.
+- local, versioned LLM evaluation with deterministic checks and human review.
 
 ## Cloud architecture example
 
@@ -145,6 +168,7 @@ walkthrough is intentionally sanitized, but the architecture and security bounda
 - [Development and quality principles](docs/development_guidelines.md)
 - [Project roadmap](docs/roadmap.md)
 - [Local Ollama setup example](docs/deployment-ollama.md)
+- [LLM evaluation approach](docs/llm-evaluation.md)
 
 The documentation is selected to show engineering reasoning. Private learning
 journals, detailed production implementation logs, personal investment notes,

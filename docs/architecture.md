@@ -99,6 +99,18 @@ production prompts, schemas, or strategy rules. Deterministic code owns
 calculations, validation, routing, and outcome rules; LLM providers interpret
 validated facts and explain them.
 
+## Evaluation boundary
+
+Model and prompt changes are evaluated outside the live application using a
+small versioned set of frozen Technical Analysis cases. The evaluation runner
+uses the same agent and model boundary as the application, then records
+deterministic checks, runtime measurements, and model output. A separate review
+packet supports manual assessment; an LLM judge is optional and advisory.
+
+This process is intentionally local and manual. The frozen cases and selected
+historical registry are suitable for version control, while private generated
+outputs, prompts, and business-specific facts remain outside this portfolio.
+
 ### Static per-agent model configuration
 
 Each agent can select its provider and model through configuration. An
